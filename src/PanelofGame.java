@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 
 public class PanelofGame extends JPanel implements ActionListener
 {
+    //declarations
     static final int screenWidth = 800;
     static final int screenHeight = 800;
     static final int unitSize = 25;
@@ -26,6 +27,8 @@ public class PanelofGame extends JPanel implements ActionListener
     Random random;
     PanelofGame()
     {
+        // Initialize random and set up the game
+
         random = new Random();
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.GREEN);
@@ -36,6 +39,8 @@ public class PanelofGame extends JPanel implements ActionListener
 
     public void gameStart()
     {
+        // Start the game by placing the first fruit and setting running to true
+
         newFruit();
         running = true;
     timer = new Timer(delay,this);
@@ -48,15 +53,24 @@ public class PanelofGame extends JPanel implements ActionListener
         drawing(g);
     }
 
-    public void drawing(Graphics g) {
+    public void drawing(Graphics g)
+    {
+        // Drawing logic for the game
+
         if (running) {
+            // Draw grid lines
+
             for (int i = 0; i < screenHeight / unitSize; i++) {
                 g.drawLine(i * unitSize, 0, i * unitSize, screenHeight);
                 g.drawLine(0, i * unitSize, screenWidth, i * unitSize);
 
             }
+            // Draw the fruit
+
             g.setColor(Color.orange);
             g.fillOval(fruitX, fruitY, unitSize, unitSize);
+
+            // Draw the snake
 
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
@@ -69,6 +83,8 @@ public class PanelofGame extends JPanel implements ActionListener
 
                 }
             }
+            // Draw the score
+
             g.setColor(Color.red);
             g.setFont(new Font("Ink Free", Font.ITALIC,50 ));
             FontMetrics metrics = getFontMetrics(g.getFont());
@@ -82,12 +98,17 @@ public class PanelofGame extends JPanel implements ActionListener
 
     public void newFruit()
     {
+        // Place a new fruit at a random location
+
         fruitX = random.nextInt((int)(screenWidth/unitSize)) * unitSize;
         fruitY = random.nextInt((int)(screenHeight/unitSize)) * unitSize;
 
 
     }
-    public void movement() {
+    public void movement()
+    {
+        // Move the snake's body parts based on the current direction
+
         for (int i = bodyParts; i > 0; i--)
         {
             x[i] = x[i - 1];
@@ -112,6 +133,8 @@ public class PanelofGame extends JPanel implements ActionListener
 
     public void checkFruit()
     {
+        // Check if the snake eats the fruit and update accordingly
+
         if((x[0] == fruitX) && (y[0] == fruitY))
         {
             bodyParts++;
@@ -122,6 +145,8 @@ public class PanelofGame extends JPanel implements ActionListener
 
     public void checkCollisions()
     {
+        // Check for collisions with walls and the snake's body
+
         //checks if head collides with body
         for(int i = bodyParts; i > 0; i--)
         {
@@ -163,6 +188,8 @@ public class PanelofGame extends JPanel implements ActionListener
 
     public void GameOver(Graphics g)
     {
+        // Display game over message and score
+
         g.setColor(Color.red);
         g.setFont(new Font("Ink Free", Font.ITALIC,80 ));
         FontMetrics metrics1 = getFontMetrics(g.getFont());
@@ -178,7 +205,9 @@ public class PanelofGame extends JPanel implements ActionListener
    @Override
    public void actionPerformed(ActionEvent e)
    {
-        if(running)
+       // Perform actions for each game iteration
+
+       if(running)
         {
             movement();
             checkFruit();
@@ -193,7 +222,9 @@ public class PanelofGame extends JPanel implements ActionListener
       @Override
       public void keyPressed(KeyEvent e)
       {
-            switch(e.getKeyCode())
+          // Handle key presses to change the snake's direction
+
+          switch(e.getKeyCode())
             {
                 case KeyEvent.VK_LEFT:
                     if(direction != 'R')
